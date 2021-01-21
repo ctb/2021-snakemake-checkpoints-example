@@ -34,12 +34,12 @@ class Checkpoint_MakePattern:
     def __call__(self, w):
         global checkpoints
 
-        # wait for the results of 'check_counts'; this will trigger
+        # wait for the results of 'check_counts'; this will trigger an
         # exception until that rule has been run.
         checkpoints.check_count.get(**w)
 
         count = self.get_count()
-        nums = range(0, count)
+        nums = range(1, count + 1)
 
         pattern = expand(self.pattern, n=nums, **w)
         return pattern
