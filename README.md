@@ -6,6 +6,10 @@ This is an example Snakefile that constructs a dynamic number of files
 So, for example, if it's 6am, it will create output files
 "output-1.txt" through "output-8.txt".
 
+The key point is that the number of output files is unknown at the beginning
+of the snakemake run, so snakemake must figure it out dynamically. Here,
+I use checkpoints to make that happen.
+
 To run:
 
 ```

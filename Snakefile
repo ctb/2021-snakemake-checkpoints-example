@@ -38,6 +38,9 @@ class Checkpoint_MakePattern:
         # exception until that rule has been run.
         checkpoints.check_count.get(**w)
 
+        # the magic, such as it is, happens here: we create the
+        # information used to expand the pattern, using arbitrary
+        # Python code.
         count = self.get_count()
         nums = range(1, count + 1)
 
