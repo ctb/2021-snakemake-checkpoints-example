@@ -11,7 +11,7 @@ rule save_time:
 # second rule, a checkpoint for rules that depend on contents of "count.txt"
 checkpoint check_count:
     input: "count.txt"
-    output:
+    output:                     # checkpoints _must_ have output set.
         touch(".make_files.touch")
 
 # third rule: make a file 'output-{n}.txt'

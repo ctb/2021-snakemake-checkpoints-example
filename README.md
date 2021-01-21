@@ -15,3 +15,11 @@ To run:
 ```
 snakemake -j 1 make_all_files
 ```
+
+## A second example
+
+See `Snakefile.random`, and run it like so:
+
+```
+snakemake -s Snakefile.random make_all_files -j 1
+```
