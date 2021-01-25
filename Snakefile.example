@@ -1,0 +1,14 @@
+checkpoint a:
+    output: "a.out"
+    shell: """
+        touch a.out
+    """
+
+def input_for_b(*w):
+    return checkpoints.a.get().output
+    
+rule b:
+    input:
+        input_for_b
+    run: 
+        print(f'input is: {input}')
