@@ -1,0 +1,18 @@
+"""
+Run with:
+
+snakemake -s Snakefile.example2 -j 1 b
+"""
+checkpoint a:
+    output: touch("a.out")
+
+def checkpoint_output(name):
+    def get_output(wildcards, name=name):
+        return getattr(checkpoints, name).get(**wildcards).output
+    return get_output
+       
+rule b:
+    input:
+        checkpoint_output('a')
+    run: 
+        print(f'input is: {input}')

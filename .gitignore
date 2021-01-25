@@ -1,6 +1,8 @@
-.make_*.touch
 .snakemake
 count.txt
 names.csv
 output-*.txt
 *~
+a.out
+output-*
+.*.touch

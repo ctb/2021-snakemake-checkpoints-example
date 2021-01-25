@@ -1,25 +1,11 @@
 # 2021-snakemake-checkpoints-example
 
-This is an example Snakefile that constructs a dynamic number of files
-"output-{n}.txt", based on the current hour of the day plus 2.
+These are example Snakefiles for a blog post on checkpoints in snakemake.
 
-So, for example, if it's 6am, it will create output files
-"output-1.txt" through "output-8.txt".
+I'll update this README with a link to the blog post; in the meantime,
+look at the top of each Snakefile to see run info.
 
-The key point is that the number of output files is unknown at the beginning
-of the snakemake run, so snakemake must figure it out dynamically. Here,
-I use checkpoints to make that happen.
-
-To run:
-
+To reset the directory to a clean state, do:
 ```
-snakemake -j 1 make_all_files
-```
-
-## A second example
-
-See `Snakefile.random`, and run it like so:
-
-```
-snakemake -s Snakefile.random make_all_files -j 1
+rm -f output* .*.touch names.csv
 ```

@@ -1,3 +1,8 @@
+"""
+Run with:
+
+snakemake -s Snakefile.example -j 1 b
+"""
 checkpoint a:
     output: touch("a.out")
 

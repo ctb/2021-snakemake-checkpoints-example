@@ -1,0 +1,68 @@
+"""
+Run with:
+
+snakemake -s Snakefile.dynamic -j 1 make_patterns make_summary
+
+Note that this erroneously picks up files that were created by
+Snakefile.count, but that's a good failure mode to demonstrate ;).
+"""
+import random
+import string
+
+seed = 1
+random.seed(seed)
+
+# first rule: generate a bunch of files.
+checkpoint make_files:
+    output: touch('.make_rs_files.touch')
+    run:
+        num = int(random.uniform(4, 15))
+        letters = string.ascii_lowercase
+        for n in range(0, num):
+            rs = ''.join(random.choice(letters) for i in range(10))
+            with open(f'output-{rs}.txt', 'wt') as fp:
+                print(f'some content here ({rs})!', file=fp)
+
+# rule to work on the files created by make_files and Do Something with them.
+rule do_round_2_file:
+    input: "output-{name}.txt"
+    output: "output-{name}.round2"
+    shell: """
+        echo this is round2 for {wildcards.name} > {output}
+    """
+
+# checkpoint code to find all the files and specify all the outputs
+class Checkpoint_MakePattern:
+    def __init__(self, pattern):
+        self.pattern = pattern
+
+    def __call__(self, w):
+        global checkpoints
+
+        # wait for the results of 'check_csv'; this will trigger an
+        # exception until that rule has been run.
+        checkpoints.make_files.get(**w)
+
+        # use glob_wildcards to find the (as-yet-unknown) new files.
+        names = glob_wildcards('output-{rs}.txt')[0]
+
+        pattern = expand(self.pattern, name=names, **w)
+        return pattern
+
+# final rule that depends on that checkpoint and transforms
+# dynamically created files into something else.
+rule make_patterns:
+    input:
+        '.make_rs_files.touch',
+        Checkpoint_MakePattern('output-{name}.round2')
+
+# bonus rule that does something with all the files
+rule make_summary:
+    input:
+        '.make_rs_files.touch',
+        files=Checkpoint_MakePattern('output-{name}.txt')
+    output:
+        'output-random.summary'
+    shell: """
+        cat {input.files} > {output}
+    """

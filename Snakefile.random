@@ -1,3 +1,8 @@
+"""
+Run with:
+
+snakemake -s Snakefile.random -j 1 make_all_files
+"""
 import random
 import string
 
@@ -13,8 +18,9 @@ rule make_spreadsheet:
         num = random.uniform(4, 15)
         letters = string.ascii_lowercase
         with open(str(output), 'wt') as fp:
-            rs = ''.join(random.choice(letters) for i in range(10))
-            print(rs, file=fp)
+            for n in range(0, num):
+                rs = ''.join(random.choice(letters) for i in range(10))
+                print(rs, file=fp)
 
 # second rule, a checkpoint for rules that depend on contents of "count.csv"
 checkpoint check_csv:
