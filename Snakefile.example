@@ -1,10 +1,7 @@
 checkpoint a:
-    output: "a.out"
-    shell: """
-        touch a.out
-    """
+    output: touch("a.out")
 
-def input_for_b(*w):
+def input_for_b(*wildcards):
     return checkpoints.a.get().output
     
 rule b:
